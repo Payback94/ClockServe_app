@@ -56,7 +56,7 @@
         public function read_once(){
             $sql = 'SELECT * from '.$this->table.' WHERE request_id=? LIMIT 0,1';
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindparam(1, $this->emp_id);
+            $stmt->bindparam(1, $this->request_id);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $this->request_id = $row['request_id'];
@@ -69,15 +69,39 @@
 
         }
 
+        public function read_emp_once(){
+            $sql = 'SELECT * FROM request WHERE emp_id=?';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindparam(1, $this->emp_id);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->request_id = $row['request_id'];
+            $this->emp_id = $row['emp_id'];
+            $this->request_type = $row['request_type'];
+            $this->request_reason = $row['request_reason'];
+            $this->date_leave = $row['date_leave'];
+            $this->date_return = $row['date_return'];
+            $this->request_approval = $row['request_approval'];
+
+        }
+
+        public function read_emp_all(){
+            $sql = 'SELECT * FROM request WHERE emp_id=?';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindparam(1, $this->emp_id);
+            $stmt->execute();
+            return $stmt;
+        }
+
         public function create(){
-            $sql ='INSERT INTO '.$this->table.' SET 
+            $sql ="INSERT INTO ".$this->table." SET 
                 emp_id=:emp_id,
                 request_type=:request_type,
                 request_reason=:request_reason,
                 date_leave=:date_leave,
                 date_return=:date_return,
-                request_approval=:request_approval,
-            ';
+                request_approval='PENDING'
+            ";
 
             $stmt = $this->conn->prepare($sql);
 
@@ -85,14 +109,13 @@
             $this->request_type = htmlspecialchars(strip_tags($this->request_type));
             $this->request_reason = htmlspecialchars(strip_tags($this->request_reason));
             $this->date_leave = htmlspecialchars(strip_tags($this->date_leave));
-            $this->date_reason = htmlspecialchars(strip_tags($this->date_reason));
+            $this->date_return = htmlspecialchars(strip_tags($this->date_return));
 
             $stmt->bindparam(':emp_id',$this->emp_id);
             $stmt->bindparam(':request_type',$this->request_type);
             $stmt->bindparam(':request_reason',$this->request_reason);
             $stmt->bindparam(':date_leave',$this->date_leave);
             $stmt->bindparam(':date_return',$this->date_return);
-            $stmt->bindparam(':request_approval',$this->request_approval);
 
             if($stmt->execute()){
                 return true;

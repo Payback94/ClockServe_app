@@ -16,7 +16,7 @@
 
     //get raw attendance data
     $data = json_decode(file_get_contents("php://input"));
-    var_dump($data);
+
     //assign properties
     $attendance->emp_id = $data->emp_id;
     $attendance->date = $data->attendance_date;
@@ -24,7 +24,12 @@
 
     if($attendance->timeOut()){
         echo json_encode(
-            array('message'=>'Clocked Out')
+            array('attendance_string'=>$attendance->attendance_string,
+            'emp_id'=>$attendance->emp_id,
+            'attendance_day'=>$attendance->day,
+            'attendance_date'=>$attendance->date,
+            'attendance_timeIn'=>$attendance->time_in,
+            'attendance_timeOut'=>$attendance->time_out)
         );
     } else {
         echo json_encode(

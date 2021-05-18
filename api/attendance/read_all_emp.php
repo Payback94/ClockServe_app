@@ -32,6 +32,8 @@
                 'attendance_day'=>$attendance_day,
                 'attendance_date'=>$attendance_date,
                 'attendance_timeIn'=>$attendance_timeIn,
+                'Lunch_Out'=>$Lunch_Out,
+                'Lunch_In'=>$Lunch_In,
                 'attendance_timeOut'=>$attendance_timeOut
             );
             //push to "data"

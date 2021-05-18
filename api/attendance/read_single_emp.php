@@ -2,8 +2,8 @@
     header('Access-Control-Allow-Origin:*');
     header('Content-Type:application/json');
 
-    include_once('../../includes/Database.php');
-    include_once('../../models/Attendance.php');
+    require('../../includes/Database.php');
+    require('../../models/Attendance.php');
 
     //instatiate db
     $database = new Database();
@@ -25,6 +25,9 @@
                 'emp_id'=>$attendance->emp_id,
                 'attendance_day'=>$attendance->day,
                 'attendance_date'=>$attendance->date,
+                'attendance_timeIn'=>$attendance->time_in,
+                'Lunch_Out'=>$attendance->lunch_out,
+                'Lunch_In'=>$attendance->lunch_in,
                 'attendance_timeIn'=>$attendance->time_in,
                 'attendance_timeOut'=>$attendance->time_out
     );

@@ -14,25 +14,22 @@
     //instatiate attendance
     $attendance = new Attendance($db);
 
-    
     //get raw attendance data
-    $rdata = file_get_contents("php://input");
-    $data = json_decode($rdata);
+    $data = json_decode(file_get_contents("php://input"));
+
     //assign properties
     $attendance->emp_id = $data->emp_id;
-    $attendance->attendance_string = $data->attendance_string;
-    $attendance->day = $data->attendance_day;
     $attendance->date = $data->attendance_date;
-    $attendance->time_in = $data ->attendance_timeIn;
+    $attendance->lunch_in = $data->lunch_in;
 
-    if($attendance->timeIn()){
+    if($attendance->lunchIn()){
         echo json_encode(
             array('attendance_string'=>$attendance->attendance_string,
             'emp_id'=>$attendance->emp_id,
             'attendance_day'=>$attendance->day,
             'attendance_date'=>$attendance->date,
             'attendance_timeIn'=>$attendance->time_in,
-            'attendance_timeOut'=>$attendance->time_out)
+            'lunch_in'=>$attendance->lunch_in)
         );
     } else {
         echo json_encode(

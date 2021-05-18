@@ -10,6 +10,8 @@
         public $day;
         public $date;
         public $time_in;
+        public $lunch_out;
+        public $lunch_in;
         public $time_out;
 
         public function __construct($db)
@@ -27,6 +29,8 @@
                 a.attendance_day,
                 a.attendance_date,
                 a.attendance_timeIn,
+                a.Lunch_Out,
+                a.Lunch_In,
                 a.attendance_timeOut
             FROM 
                 '.$this->table.' a
@@ -50,13 +54,15 @@
                 a.attendance_day,
                 a.attendance_date,
                 a.attendance_timeIn,
+                a.Lunch_Out,
+                a.Lunch_In,
                 a.attendance_timeOut
             FROM 
                 '.$this->table.' a
             WHERE
                 a.emp_id=?
             ORDER BY
-                a.attendance_date';
+                a.attendance_date DESC';
             //prepared statement
 
             $stmt=$this->conn->prepare($sql);
@@ -76,6 +82,8 @@
                 a.attendance_day,
                 a.attendance_date,
                 a.attendance_timeIn,
+                a.Lunch_Out,
+                a.Lunch_In,
                 a.attendance_timeOut
             FROM 
                 attendance a
@@ -99,6 +107,8 @@
             $this->emp_id           = $row['emp_id'];
             $this->day              = $row['attendance_day'];
             $this->date             = $row['attendance_date'];
+            $this->lunch_out        = $row['Lunch_Out'];
+            $this->lunch_in         = $row['Lunch_In'];
             $this->time_in          = $row['attendance_timeIn'];
             $this->time_out         = $row['attendance_timeOut'];
         }
@@ -143,6 +153,40 @@
             $stmt->bindparam(':emp_id', $this->emp_id);
             $stmt->bindparam(':attendance_date', $this->date);
             $stmt->bindparam(':attendance_timeOut', $this->time_out);
+
+            if($stmt->execute()){
+                return true;
+            } else {
+                printf("Error: %s.\n", $stmt->error);
+                return false;
+            }
+        }
+
+        public function lunchOut(){
+            $sql = 'UPDATE '.$this->table.' SET Lunch_Out=:Lunch_Out Where emp_id=:emp_id and attendance_date=:attendance_date';
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bindparam(':emp_id', $this->emp_id);
+            $stmt->bindparam(':attendance_date', $this->date);
+            $stmt->bindparam(':Lunch_Out', $this->lunch_out);
+
+            if($stmt->execute()){
+                return true;
+            } else {
+                printf("Error: %s.\n", $stmt->error);
+                return false;
+            }
+        }
+
+        public function lunchIn(){
+            $sql = 'UPDATE '.$this->table.' SET Lunch_In=:Lunch_In Where emp_id=:emp_id and attendance_date=:attendance_date';
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bindparam(':emp_id', $this->emp_id);
+            $stmt->bindparam(':attendance_date', $this->date);
+            $stmt->bindparam(':Lunch_In', $this->lunch_in);
 
             if($stmt->execute()){
                 return true;
