@@ -29,12 +29,11 @@
     //this converts it
     $json_data = json_decode($data, true);
 
-    var_dump($data);
-    var_dump($json_data);
 
     $first_name =$json_data['first_name'];
     $last_name =$json_data['last_name'];
     $email =$json_data['email'];
+    $birth_date =$json_data['dateofbirth'];
     $password =$json_data['password'];
     $password2 =$json_data['password2'];
     $gender = $json_data['gender'];
@@ -48,6 +47,7 @@
     emp_last_name=:lastname, 
     emp_email=:email,
     emp_password=:password,
+    emp_birth_date=:emp_birth_date,
     emp_gender=:gender,
     emp_race=:race";
 
@@ -58,6 +58,7 @@
         $stmt->bindParam(':firstname', $first_name);
         $stmt->bindParam(':lastname', $last_name);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':emp_birth_date', $birth_date);
         $stmt->bindParam(':gender', $gender);
         $stmt->bindParam(':race', $race);
 
